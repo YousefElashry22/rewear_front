@@ -11,6 +11,7 @@ const request = async (endpoint, options = {}) => {
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
+    credentials: 'include',
     headers: { ...headers, ...options.headers }
   });
 

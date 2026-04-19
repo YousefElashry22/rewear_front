@@ -33,15 +33,23 @@ export default function CartModal({ onClose }) {
       navigate('/auth');
       return;
     }
+    
     try {
-      await checkoutCart(user.id, cart);
-      await refreshCart();
-      alert('Order placed successfully!');
-      onClose();
-      navigate('/orders');
+      const token = localStorage.getItem('rewear_token');
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/payment/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ amount: cartTotal })
+      });
+
+      const { iframeUrl } = await res.json();
+      window.location.href = iframeUrl;
     } catch (err) {
-      console.error(err);
-      alert('Checkout failed: ' + err.message);
+      console.error('Payment initialization failed:', err);
+      alert('Failed to start payment process.');
     }
   };
 
@@ -80,7 +88,9 @@ export default function CartModal({ onClose }) {
             Total: ${cartTotal}
           </div>
           {cart.length > 0 && (
-            <button className="checkout-btn" onClick={handleCheckout}>Proceed to Checkout</button>
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Checkout — {cartTotal} EGP
+            </button>
           )}
         </div>
       </div>
