@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import './App.css';
 
@@ -17,10 +17,10 @@ import Auth from './pages/Auth';
 import Orders from './pages/Orders';
 
 function MainRouter() {
-  const { cart, cartTotal, isCartOpen, setIsCartOpen } = useCart(); // Assuming I might add setIsCartOpen to context, but for now I'll keep it local if it's UI state
+  const { } = useCart();
   const [isCartModalVisible, setIsCartModalVisible] = useState(false);
   const [search, setSearch] = useState('');
-  const { user } = useAuth();
+
   const location = useLocation();
 
   return (
