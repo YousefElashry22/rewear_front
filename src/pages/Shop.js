@@ -29,7 +29,7 @@ export default function Shop({ search }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const { addToCart } = useCart();
+  const { addToCart, openAddNotification } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Shop({ search }) {
     }
     try {
       await addToCart(product.id, 1);
-      alert('Added to cart!');
+      openAddNotification();
     } catch (err) {
       console.error(err);
       alert('Failed to add to cart: ' + err.message);

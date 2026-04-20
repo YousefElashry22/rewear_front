@@ -8,6 +8,7 @@ import './App.css';
 import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
 import CartModal from './components/CartModal';
+import AddedToCartNotification from './components/AddedToCartNotification';
 
 import Home from './pages/Home';
 import Shop from './pages/Shop';
@@ -17,7 +18,7 @@ import Auth from './pages/Auth';
 import Orders from './pages/Orders';
 
 function MainRouter() {
-  const { } = useCart();
+const { isAddNotificationOpen, closeAddNotification } = useCart();
   const [isCartModalVisible, setIsCartModalVisible] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -54,6 +55,17 @@ function MainRouter() {
       {isCartModalVisible && (
         <CartModal
           onClose={() => setIsCartModalVisible(false)}
+        />
+      )}
+
+      {isAddNotificationOpen && (
+        <AddedToCartNotification 
+          isOpen={isAddNotificationOpen}
+          onClose={closeAddNotification}
+          onViewCart={() => {
+            setIsCartModalVisible(true);
+            closeAddNotification();
+          }} 
         />
       )}
 

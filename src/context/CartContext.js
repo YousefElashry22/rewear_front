@@ -6,7 +6,11 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
+  const [isAddNotificationOpen, setIsAddNotificationOpen] = useState(false);
+
+  const openAddNotification = useCallback(() => setIsAddNotificationOpen(true), []);
+  const closeAddNotification = useCallback(() => setIsAddNotificationOpen(false), []);
   const { user } = useAuth();
 
   const fetchCart = useCallback(async () => {
@@ -81,6 +85,9 @@ export const CartProvider = ({ children }) => {
       updateQuantity, 
       removeFromCart, 
       clearCart,
+      isAddNotificationOpen,
+      openAddNotification,
+      closeAddNotification,
       refreshCart: fetchCart 
     }}>
       {children}
