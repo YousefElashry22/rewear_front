@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 
 export default function CheckoutForm({ onClose }) {
   const { user, profile } = useAuth();
-  const { cartItems, cartTotal, clearCart } = useCart();
+  const { cart, cartTotal } = useCart();
 
   const [fullName, setFullName] = useState(profile?.full_name || '');
   const [phone, setPhone] = useState(profile?.phone || '');
@@ -38,7 +38,7 @@ export default function CheckoutForm({ onClose }) {
             address,
             city,
             notes,
-            items: cartItems.map(item => ({
+            items: cart.map(item => ({
               product_id: item.product_id,
               quantity: item.quantity,
               price: item.products.price
@@ -86,7 +86,7 @@ export default function CheckoutForm({ onClose }) {
         {/* Order Summary */}
         <div style={{ background: '#111', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem' }}>
           <h3 style={{ color: 'var(--gold)', margin: '0 0 0.5rem', fontSize: '14px' }}>Order Summary</h3>
-          {cartItems.map(item => (
+          {cart.map(item => (
             <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#ccc', marginBottom: '4px' }}>
               <span>{item.products?.name} × {item.quantity}</span>
               <span>${item.products?.price * item.quantity}</span>
