@@ -66,7 +66,34 @@ export default function CartModal({ onClose }) {
                       <span>{item.quantity}</span>
                       <button onClick={() => handleUpdateQty(item.id, item.quantity, 1)} style={{ padding: '0 5px' }}>+</button>
                     </div>
-                    <button className="remove-btn" onClick={() => handleRemove(item.id)} style={{ color: 'red', fontSize: '0.8rem' }}>Remove</button>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemove(item.id)}
+                      title="Remove item"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#666',
+                        cursor: 'pointer',
+                        padding: '6px 10px',
+                        borderRadius: '6px',
+                        fontSize: '16px',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.color = '#ff6b6b';
+                        e.currentTarget.style.background = 'rgba(255,107,107,0.1)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.color = '#666';
+                        e.currentTarget.style.background = 'none';
+                      }}
+                    >
+                      🗑
+                    </button>
                   </div>
                 </div>
               ))
