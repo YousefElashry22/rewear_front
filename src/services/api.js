@@ -24,10 +24,10 @@ const request = async (endpoint, options = {}) => {
 
 // ─── AUTHENTICATION ────────────────────────────────────────────────────────────
 
-export const signUpUser = async (email, password) => {
+export const signUpUser = async (email, password, full_name, phone, address, date_of_birth) => {
   return await request('/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password, full_name, phone, address, date_of_birth })
   });
 };
 

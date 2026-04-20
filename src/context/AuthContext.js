@@ -11,24 +11,41 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check for user in localStorage and Supabase session
+  const fetchProfile = async (userId) => {
+    try {
+      const token = localStorage.getItem('rewear_token');
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/profile`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setProfile(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch profile', err);
+    }
+  };
+
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // Try backend user first
         const backendUser = await getCurrentUser();
         setUser(backendUser);
+        await fetchProfile(backendUser.id);
       } catch (err) {
-        // Check Supabase session as fallback
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           localStorage.setItem('rewear_token', session.access_token);
           localStorage.setItem('rewear_user', JSON.stringify(session.user));
           setUser(session.user);
+          await fetchProfile(session.user.id);
         } else {
           setUser(null);
+          setProfile(null);
         }
       } finally {
         setLoading(false);
@@ -36,7 +53,6 @@ export const AuthProvider = ({ children }) => {
     };
     initAuth();
 
-    // Listen for localStorage changes
     const handleStorageChange = (e) => {
       if (e.key === 'rewear_user') {
         setUser(e.newValue ? JSON.parse(e.newValue) : null);
@@ -46,36 +62,35 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Supabase auth state listener
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        localStorage.setItem('rewear_token', session.access_token);
-        localStorage.setItem('rewear_user', JSON.stringify(session.user));
-        setUser(session.user);
-      } else {
-        localStorage.removeItem('rewear_token');
-        localStorage.removeItem('rewear_user');
-        setUser(null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session) {
+          localStorage.setItem('rewear_token', session.access_token);
+          localStorage.setItem('rewear_user', JSON.stringify(session.user));
+          setUser(session.user);
+          await fetchProfile(session.user.id);
+        } else {
+          localStorage.removeItem('rewear_token');
+          localStorage.removeItem('rewear_user');
+          setUser(null);
+          setProfile(null);
+        }
       }
-    });
-
+    );
     return () => subscription.unsubscribe();
   }, []);
 
   const updateUserState = (newUser) => {
     setUser(newUser);
+    if (!newUser) setProfile(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, updateUserState }}>
+    <AuthContext.Provider value={{ user, profile, loading, updateUserState }}>
       {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
