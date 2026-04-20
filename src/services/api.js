@@ -66,7 +66,7 @@ export const getCurrentUser = async () => {
 export const getProducts = async (category = 'All') => {
   let url = '/products';
   if (category && category !== 'All') {
-    url += `?category=${encodeURIComponent(category)}`;
+    url += `?category=${encodeURIComponent(category.toLowerCase())}`;
   }
   return await request(url);
 };
