@@ -3,6 +3,12 @@ import { signInUser, signUpUser } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
 
 export default function Auth() {
   const { updateUserState } = useAuth();
@@ -12,6 +18,15 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://courageous-pudding-3d68b2.netlify.app/shop'
+      }
+    });
+  };
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -75,6 +90,26 @@ export default function Auth() {
           style={{ background: 'none', border: 'none', color: 'var(--gold)', cursor: 'pointer', textDecoration: 'underline' }}
         >
           {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}
+        </button>
+      </div>
+
+      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <button 
+          onClick={handleGoogleLogin}
+          style={{ 
+            background: 'linear-gradient(45deg, var(--gold), #d4a017)', 
+            color: 'white', 
+            border: 'none', 
+            padding: '0.75rem 2rem', 
+            borderRadius: '8px', 
+            fontWeight: 'bold', 
+            cursor: 'pointer',
+            width: '100%',
+            maxWidth: '300px'
+          }}
+          disabled={loading}
+        >
+          Sign in with Google
         </button>
       </div>
     </motion.section>

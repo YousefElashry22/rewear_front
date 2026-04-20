@@ -1,5 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentUser } from '../services/api';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
 
 const AuthContext = createContext();
 
@@ -7,32 +13,65 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // We check for the user in localStorage when the app loads
+  // Check for user in localStorage and Supabase session
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const u = await getCurrentUser();
-        setUser(u);
+        // Try backend user first
+        const backendUser = await getCurrentUser();
+        setUser(backendUser);
       } catch (err) {
-        // Not authenticated
-        setUser(null);
+        // Check Supabase session as fallback
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          const supabaseUser = { 
+            id: session.user.id, 
+            email: session.user.email,
+            // Add other fields as needed
+          };
+          localStorage.setItem('rewear_user', JSON.stringify(supabaseUser));
+          setUser(supabaseUser);
+        } else {
+          setUser(null);
+        }
       } finally {
         setLoading(false);
       }
     };
     initAuth();
-    
-    // We listen for changes in localstorage in case they log out in another tab
+
+    // Listen for localStorage changes
     const handleStorageChange = (e) => {
       if (e.key === 'rewear_user') {
         setUser(e.newValue ? JSON.parse(e.newValue) : null);
       }
     };
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    return () => window.addEventListener('storage', handleStorageChange);
   }, []);
 
-  // Update user in context helper
+  // Supabase auth state listener
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        const supabaseUser = { 
+          id: session.user.id, 
+          email: session.user.email,
+          // Map other Supabase user fields if needed
+        };
+        localStorage.setItem('rewear_user', JSON.stringify(supabaseUser));
+        setUser(supabaseUser);
+      } else {
+        localStorage.removeItem('rewear_user');
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const updateUserState = (newUser) => {
     setUser(newUser);
   };
