@@ -62,7 +62,7 @@ export default function CheckoutForm({ onClose }) {
     <div style={{
       position: 'fixed', inset: 0,
       background: 'rgba(0,0,0,0.85)',
-      zIndex: 1000,
+      zIndex: 99999,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
