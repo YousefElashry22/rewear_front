@@ -4,6 +4,7 @@ import { getProducts } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import SkeletonCard from '../components/SkeletonCard';
 
 const CATEGORIES = ['All', 'Streetwear', 'Formal', 'Accessories'];
 
@@ -85,7 +86,7 @@ export default function Shop({ search }) {
 
       <div className="products-grid">
         {loading ? (
-          <p>Loading products...</p>
+          Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
         ) : filteredProducts.length > 0 ? (
           filteredProducts.map((product, i) => (
             <motion.div

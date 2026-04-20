@@ -64,11 +64,26 @@ export const getCurrentUser = async () => {
 // ─── PRODUCTS ──────────────────────────────────────────────────────────────────
 
 export const getProducts = async (category = 'All') => {
+  const cacheKey = `products_${category}`;
+  const cached = localStorage.getItem(cacheKey);
+  const cacheTime = localStorage.getItem(`${cacheKey}_time`);
+  
+  // لو في cache أقل من 5 دقايق
+  if (cached && cacheTime && Date.now() - cacheTime < 5 * 60 * 1000) {
+    return JSON.parse(cached);
+  }
+
   let url = '/products';
   if (category && category !== 'All') {
     url += `?category=${encodeURIComponent(category.toLowerCase())}`;
   }
-  return await request(url);
+  
+  const data = await request(url);
+  
+  localStorage.setItem(cacheKey, JSON.stringify(data));
+  localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+  
+  return data;
 };
 
 export const getProductById = async (id) => {

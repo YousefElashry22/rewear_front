@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
@@ -10,12 +10,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CartModal from './components/CartModal';
 import AddedToCartNotification from './components/AddedToCartNotification';
 
-import Home from './pages/Home';
-import Shop from './pages/Shop';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Auth from './pages/Auth';
-import Orders from './pages/Orders';
+const Home = lazy(() => import('./pages/Home'));
+const Shop = lazy(() => import('./pages/Shop'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Auth = lazy(() => import('./pages/Auth'));
+const Orders = lazy(() => import('./pages/Orders'));
 
 function MainRouter() {
 const { isAddNotificationOpen, closeAddNotification } = useCart();
@@ -34,21 +34,23 @@ const { isAddNotificationOpen, closeAddNotification } = useCart();
 
       <main>
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop search={search} />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route 
-              path="/orders" 
-              element={
-                <ProtectedRoute>
-                  <Orders />
-                </ProtectedRoute>
-              } 
-            />
-          </Routes>
+          <Suspense fallback={<div style={{color:'var(--gold)',textAlign:'center',padding:'4rem'}}>Loading...</div>}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop" element={<Shop search={search} />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route 
+                path="/orders" 
+                element={
+                  <ProtectedRoute>
+                    <Orders />
+                  </ProtectedRoute>
+                } 
+              />
+            </Routes>
+          </Suspense>
         </AnimatePresence>
       </main>
 
