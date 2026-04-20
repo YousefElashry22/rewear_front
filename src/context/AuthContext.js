@@ -24,13 +24,9 @@ export const AuthProvider = ({ children }) => {
         // Check Supabase session as fallback
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          const supabaseUser = { 
-            id: session.user.id, 
-            email: session.user.email,
-            // Add other fields as needed
-          };
-          localStorage.setItem('rewear_user', JSON.stringify(supabaseUser));
-          setUser(supabaseUser);
+          localStorage.setItem('rewear_token', session.access_token);
+          localStorage.setItem('rewear_user', JSON.stringify(session.user));
+          setUser(session.user);
         } else {
           setUser(null);
         }
@@ -47,23 +43,20 @@ export const AuthProvider = ({ children }) => {
       }
     };
     window.addEventListener('storage', handleStorageChange);
-    return () => window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   // Supabase auth state listener
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        const supabaseUser = { 
-          id: session.user.id, 
-          email: session.user.email,
-          // Map other Supabase user fields if needed
-        };
-        localStorage.setItem('rewear_user', JSON.stringify(supabaseUser));
-        setUser(supabaseUser);
+        localStorage.setItem('rewear_token', session.access_token);
+        localStorage.setItem('rewear_user', JSON.stringify(session.user));
+        setUser(session.user);
       } else {
+        localStorage.removeItem('rewear_token');
         localStorage.removeItem('rewear_user');
         setUser(null);
       }
