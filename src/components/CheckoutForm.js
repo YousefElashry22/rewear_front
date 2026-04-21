@@ -11,6 +11,7 @@ export default function CheckoutForm({ onClose }) {
   const [address, setAddress] = useState(profile?.address || '');
   const [city, setCity] = useState('');
   const [notes, setNotes] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -38,6 +39,7 @@ export default function CheckoutForm({ onClose }) {
             address,
             city,
             notes,
+            payment_method: paymentMethod,
             items: cart.map(item => ({
               product_id: item.product_id,
               quantity: item.quantity,
@@ -139,6 +141,39 @@ export default function CheckoutForm({ onClose }) {
             onChange={e => setNotes(e.target.value)}
             style={{ ...inputStyle, height: '80px', resize: 'vertical' }}
           />
+
+          <div style={{ marginBottom: '1rem' }}>
+            <p style={{ color: 'var(--gold)', marginBottom: '8px', fontSize: '14px' }}>طريقة الدفع</p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {[
+                { id: 'card', label: '💳 كارت فيزا/ماستركارد' },
+                { id: 'wallet', label: '📱 محفظة موبايل' }
+              ].map(method => (
+                <button
+                  key={method.id}
+                  type="button"
+                  onClick={() => setPaymentMethod(method.id)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    border: paymentMethod === method.id
+                      ? '2px solid var(--gold)'
+                      : '1px solid #444',
+                    background: paymentMethod === method.id
+                      ? 'rgba(201,168,76,0.15)'
+                      : '#111',
+                    color: paymentMethod === method.id ? 'var(--gold)' : '#ccc',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {method.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <button
             type="submit"
