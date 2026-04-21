@@ -16,12 +16,10 @@ function MagneticBtn({ onClick, children }) {
     const dx = (e.clientX - centerX) * 0.22;
     const dy = (e.clientY - centerY) * 0.22;
     posRef.current = { x: dx, y: dy };
-
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
-      if (btnRef.current) {
+      if (btnRef.current)
         btnRef.current.style.transform = `translate(${posRef.current.x}px, ${posRef.current.y}px)`;
-      }
     });
   }, []);
 
@@ -52,15 +50,14 @@ function MagneticBtn({ onClick, children }) {
 }
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const bgRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => {
       if (!bgRef.current) return;
-      const scrolled = window.scrollY;
-      bgRef.current.style.transform = `translateY(${scrolled * 0.35}px)`;
+      bgRef.current.style.transform = `translateY(${window.scrollY * 0.35}px)`;
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -78,25 +75,34 @@ export default function Home() {
 
       <div className="hero-content">
         <div className="hero-text">
+
+          {/* الـ eyebrow مش بيتترجم عشان هو brand identity */}
           <span className="hero-eyebrow">Est. MMXXIV · Curated Menswear</span>
 
           <h1 className="hero-heading">
-            CURATED<br />
-            <em>GENTS'</em><br />
-            VINTAGE
+            {lang === 'ar' ? (
+              t('heroTitle')
+            ) : (
+              <>
+                CURATED<br />
+                <em>GENTS'</em><br />
+                VINTAGE
+              </>
+            )}
           </h1>
 
-          <p className="hero-sub">
-            Ethical luxury. Distinctive style.<br />
-            Unbeatable value.
-          </p>
+          <p className="hero-sub">{t('heroSubtitle')}</p>
 
-          <MagneticBtn onClick={() => navigate('/shop')}>Shop Now</MagneticBtn>
+          <MagneticBtn onClick={() => navigate('/shop')}>
+            {t('shopNow')}
+          </MagneticBtn>
         </div>
 
         <div className="hero-deco">
           <div className="hero-deco-line" />
-          <span className="hero-deco-text">Premium Selection</span>
+          <span className="hero-deco-text">
+            {lang === 'ar' ? 'تشكيلة مميزة' : 'Premium Selection'}
+          </span>
           <div className="hero-deco-line" />
         </div>
       </div>
