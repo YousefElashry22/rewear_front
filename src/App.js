@@ -83,11 +83,11 @@ export default function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <LanguageProvider>
-          <Router>
+        <Router>
+          <LanguageProvider>
             <MainRouter />
-          </Router>
-        </LanguageProvider>
+          </LanguageProvider>
+        </Router>
       </CartProvider>
     </AuthProvider>
   );
