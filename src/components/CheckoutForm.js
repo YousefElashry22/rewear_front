@@ -143,11 +143,11 @@ export default function CheckoutForm({ onClose }) {
           />
 
           <div style={{ marginBottom: '1rem' }}>
-            <p style={{ color: 'var(--gold)', marginBottom: '8px', fontSize: '14px' }}>طريقة الدفع</p>
+            <p style={{ color: 'var(--gold)', marginBottom: '8px', fontSize: '14px' }}>Payment Method</p>
             <div style={{ display: 'flex', gap: '10px' }}>
               {[
-                { id: 'card', label: '💳 كارت فيزا/ماستركارد' },
-                { id: 'wallet', label: '📱 محفظة موبايل' }
+                { id: 'card', label: '💳 Visa/Mastercard' },
+                { id: 'wallet', label: '📱 Mobile Wallet' }
               ].map(method => (
                 <button
                   key={method.id}
