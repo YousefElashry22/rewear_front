@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CheckoutForm({ onClose }) {
+  const { t } = useLanguage();
   const { user, profile } = useAuth();
   const { cart, cartTotal } = useCart();
 

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const AddedToCartNotification = ({ isOpen, onClose, onViewCart }) => {
+  const { t } = useLanguage();
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {

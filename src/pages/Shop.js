@@ -4,6 +4,7 @@ import { getProducts } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import SkeletonCard from '../components/SkeletonCard';
 
 const CATEGORIES = ['All', 'Streetwear', 'Formal', 'Accessories'];
@@ -26,6 +27,7 @@ function ProductCard({ product, onAdd }) {
 }
 
 export default function Shop({ search }) {
+  const { t } = useLanguage();
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [loading, setLoading] = useState(true);

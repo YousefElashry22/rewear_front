@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 function MagneticBtn({ onClick, children }) {
   const btnRef = useRef(null);
@@ -51,6 +52,7 @@ function MagneticBtn({ onClick, children }) {
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   const bgRef = useRef(null);
   const navigate = useNavigate();
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getUserOrders } from '../services/api';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Orders() {
+  const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

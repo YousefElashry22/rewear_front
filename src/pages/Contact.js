@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   const handleChange = (e) => {

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import CheckoutForm from './CheckoutForm';
 
 export default function CartModal({ onClose }) {
+  const { t } = useLanguage();
   const { user } = useAuth();
   const { cart, cartTotal, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();

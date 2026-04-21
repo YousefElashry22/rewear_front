@@ -1,15 +1,22 @@
-# TODO List for Language Support Implementation
+# Translation, Font & i18n Updates - Implementation Plan
 
-## Plan Breakdown:
-- [x] Create src/translations/translations.js (completed)
-- [x] Create src/context/LanguageContext.js
-- [x] Edit src/App.js to add LanguageProvider
-- [x] Update Header.js to use translations and lang switcher
-- [ ] Update other components (Shop.js, Auth.js, etc.) with t() calls
-- [ ] Test RTL/LTR switching
-- [ ] Style adjustments for RTL if needed
+Status: Completed
 
-## Next Steps:
-1. Confirm LanguageContext.js creation
-2. Edit App.js
-3. Proceed to component updates
+## Steps:
+- [x] 1. Update translations.js with new en/ar keys
+- [x] 2. Update LanguageContext.js with Cairo font logic
+- [x] 3. Update public/index.html with Cairo Google Fonts link
+- [x] 4. Add useLanguage import + hook to all components (15+ files):
+  - [x] AddedToCartNotification.js
+  - [x] CartModal.js
+  - [x] CheckoutForm.js
+  - [x] ProtectedRoute.js
+  - [x] SkeletonCard.js
+  - [x] About.js
+  - [x] Auth.js
+  - [x] Contact.js
+  - [x] Home.js
+  - [x] Shop.js
+  - [x] Orders.js
+- [x] 5. Test: cd ecom-app && npm start (verify RTL Cairo font, new translations)
+- [x] Complete

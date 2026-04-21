@@ -1,4 +1,7 @@
+import { useLanguage } from '../context/LanguageContext';
+
 export default function SkeletonCard() {
+  const { t } = useLanguage();
   return (
     <div style={{
       background: '#1a1a1a',

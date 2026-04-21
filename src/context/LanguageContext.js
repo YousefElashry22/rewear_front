@@ -13,6 +13,11 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem('lang', newLang);
     document.dir = newLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = newLang;
+    if (newLang === 'ar') {
+      document.body.style.fontFamily = "'Cairo', sans-serif";
+    } else {
+      document.body.style.fontFamily = '';
+    }
   };
 
   return (

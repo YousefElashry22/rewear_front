@@ -3,6 +3,7 @@ import { signInUser, signUpUser } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -11,6 +12,7 @@ const supabase = createClient(
 );
 
 export default function Auth() {
+  const { t } = useLanguage();
   const { updateUserState } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
