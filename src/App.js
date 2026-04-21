@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
+import { LanguageProvider } from './context/LanguageContext';
 import './App.css';
 
 import Header from './components/Header';
@@ -82,9 +83,11 @@ export default function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
-          <MainRouter />
-        </Router>
+        <LanguageProvider>
+          <Router>
+            <MainRouter />
+          </Router>
+        </LanguageProvider>
       </CartProvider>
     </AuthProvider>
   );

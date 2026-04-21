@@ -3,14 +3,17 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 import { signOutUser } from '../services/api';
 
 export default function Header({ search, setSearch, onCartOpen }) {
   const { user, profile, updateUserState } = useAuth();
   const { cartCount } = useCart();
+  const { lang, t, switchLang } = useLanguage();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleLogout = async () => {
@@ -59,11 +62,11 @@ export default function Header({ search, setSearch, onCartOpen }) {
         </button>
 
         <div className="nav-links desktop-only">
-          <Link to="/" className={currentPath === '/' ? 'active' : ''}>Home</Link>
-          <Link to="/shop" className={currentPath.startsWith('/shop') ? 'active' : ''}>Shop</Link>
-          {user && <Link to="/orders" className={currentPath === '/orders' ? 'active' : ''}>Orders</Link>}
-          <Link to="/about" className={currentPath === '/about' ? 'active' : ''}>About Us</Link>
-          <Link to="/contact" className={currentPath === '/contact' ? 'active' : ''}>Contact</Link>
+<Link to="/" className={currentPath === '/' ? 'active' : ''}>{t('home')}</Link>
+          <Link to="/shop" className={currentPath.startsWith('/shop') ? 'active' : ''}>{t('shop')}</Link>
+{user && <Link to="/orders" className={currentPath === '/orders' ? 'active' : ''}>{t('orders')}</Link>}
+<Link to="/about" className={currentPath === '/about' ? 'active' : ''}>{t('about')}</Link>
+<Link to="/contact" className={currentPath === '/contact' ? 'active' : ''}>{t('contact')}</Link>
         </div>
 
         <div className="nav-actions desktop-only">
@@ -72,12 +75,50 @@ export default function Header({ search, setSearch, onCartOpen }) {
               <span>🔍</span>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder={t('search')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
           )}
+
+          <div style={{ position: 'relative' }}>
+            <button
+              className="nav-btn"
+              onClick={() => setLangOpen(!langOpen)}
+              style={{ minWidth: '60px' }}
+            >
+              {lang === 'en' ? '🌐 EN' : '🌐 AR'}
+            </button>
+            <AnimatePresence>
+              {langOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  style={{
+                    position: 'absolute',
+                    top: '110%',
+                    right: 0,
+                    background: '#1a1a1a',
+                    border: '1px solid var(--gold)',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    zIndex: 999
+                  }}
+                >
+                  <button onClick={() => { switchLang('en'); setLangOpen(false); }}
+                    style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', color: lang === 'en' ? 'var(--gold)' : '#ccc', cursor: 'pointer', textAlign: 'left' }}>
+                    🇺🇸 English
+                  </button>
+                  <button onClick={() => { switchLang('ar'); setLangOpen(false); }}
+                    style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', color: lang === 'ar' ? 'var(--gold)' : '#ccc', cursor: 'pointer', textAlign: 'right' }}>
+                    🇪🇬 العربية
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {user ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -119,7 +160,7 @@ export default function Header({ search, setSearch, onCartOpen }) {
                         fontSize: '14px'
                       }}
                     >
-                      My Orders
+                      {t('myOrders')}
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -135,18 +176,18 @@ export default function Header({ search, setSearch, onCartOpen }) {
                         fontSize: '14px'
                       }}
                     >
-                      Logout
+                      {t('logout')}
                     </button>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           ) : (
-            <Link to="/auth" className="nav-btn auth-btn">Login</Link>
+<Link to="/auth" className="nav-btn auth-btn">{t('login')}</Link>
           )}
 
           <button className="nav-btn cart-btn" onClick={() => { onCartOpen(); closeMenu(); }}>
-            Cart ({cartCount})
+            {t('cart')} ({cartCount})
           </button>
         </div>
       </div>
@@ -161,11 +202,11 @@ export default function Header({ search, setSearch, onCartOpen }) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="mobile-nav-links">
-              <Link to="/" className={currentPath === '/' ? 'active' : ''} onClick={closeMenu}>Home</Link>
-              <Link to="/shop" className={currentPath.startsWith('/shop') ? 'active' : ''} onClick={closeMenu}>Shop</Link>
-              {user && <Link to="/orders" className={currentPath === '/orders' ? 'active' : ''} onClick={closeMenu}>Orders</Link>}
-              <Link to="/about" className={currentPath === '/about' ? 'active' : ''} onClick={closeMenu}>About Us</Link>
-              <Link to="/contact" className={currentPath === '/contact' ? 'active' : ''} onClick={closeMenu}>Contact</Link>
+<Link to="/" className={currentPath === '/' ? 'active' : ''} onClick={closeMenu}>{t('home')}</Link>
+              <Link to="/shop" className={currentPath.startsWith('/shop') ? 'active' : ''} onClick={closeMenu}>{t('shop')}</Link>
+{user && <Link to="/orders" className={currentPath === '/orders' ? 'active' : ''} onClick={closeMenu}>{t('orders')}</Link>}
+<Link to="/about" className={currentPath === '/about' ? 'active' : ''} onClick={closeMenu}>{t('about')}</Link>
+<Link to="/contact" className={currentPath === '/contact' ? 'active' : ''} onClick={closeMenu}>{t('contact')}</Link>
 
               <div className="mobile-actions">
                 {currentPath.startsWith('/shop') && (
@@ -173,7 +214,7 @@ export default function Header({ search, setSearch, onCartOpen }) {
                     <span>🔍</span>
                     <input
                       type="text"
-                      placeholder="Search"
+                      placeholder={t('search')}
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                     />
@@ -187,20 +228,20 @@ export default function Header({ search, setSearch, onCartOpen }) {
                         {displayName}
                       </div>
                       <Link to="/orders" className="nav-btn auth-btn full-width" onClick={closeMenu}>
-                        My Orders
+                        {t('myOrders')}
                       </Link>
                       <button className="nav-btn auth-btn full-width" onClick={handleLogout}>
-                        Logout
+                        {t('logout')}
                       </button>
                     </>
                   ) : (
                     <Link to="/auth" className="nav-btn auth-btn full-width" onClick={closeMenu}>
-                      Login
+                      {t('login')}
                     </Link>
                   )}
 
                   <button className="nav-btn cart-btn full-width" onClick={() => { onCartOpen(); closeMenu(); }}>
-                    Cart ({cartCount})
+                    {t('cart')} ({cartCount})
                   </button>
                 </div>
               </div>

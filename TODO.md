@@ -1,10 +1,15 @@
-# Task Progress: Add Google Login to Frontend
+# TODO List for Language Support Implementation
 
-## Steps to Complete:
-- [x] Step 1: Create `ecom-app/.env` with Supabase keys.
-- [x] Step 2: Update `ecom-app/src/pages/Auth.js` to add Supabase client, `handleGoogleLogin`, and Google button.
-- [x] Step 3: Update `ecom-app/src/context/AuthContext.js` to add Supabase auth listener for state sync.
-- [x] Step 4: Test and complete.
+## Plan Breakdown:
+- [x] Create src/translations/translations.js (completed)
+- [x] Create src/context/LanguageContext.js
+- [x] Edit src/App.js to add LanguageProvider
+- [x] Update Header.js to use translations and lang switcher
+- [ ] Update other components (Shop.js, Auth.js, etc.) with t() calls
+- [ ] Test RTL/LTR switching
+- [ ] Style adjustments for RTL if needed
 
-Current status: All updates complete. Ready for testing.
-
+## Next Steps:
+1. Confirm LanguageContext.js creation
+2. Edit App.js
+3. Proceed to component updates
