@@ -50,7 +50,8 @@ function MagneticBtn({ onClick, children }) {
 }
 
 export default function Home() {
-  const { t, lang } = useLanguage();
+  const { t, lang, switchLang } = useLanguage();
+  console.log('Current lang:', lang); // شوف في الـ console بيطبع إيه
   const bgRef = useRef(null);
   const navigate = useNavigate();
 
@@ -81,7 +82,7 @@ export default function Home() {
 
           <h1 className="hero-heading">
             {lang === 'ar' ? (
-              t('heroTitle')
+              <span style={{ fontSize: '2.5rem', lineHeight: 1.4 }}>{t('heroTitle')}</span>
             ) : (
               <>
                 CURATED<br />
