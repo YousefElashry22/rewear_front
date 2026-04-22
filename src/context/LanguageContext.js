@@ -15,10 +15,15 @@ export const LanguageProvider = ({ children }) => {
 
   const t = (key) => translations[lang][key] || key;
 
-  const switchLang = (newLang) => {
-    setLang(newLang);
-    localStorage.setItem('lang', newLang);
-  };
+const switchLang = (newLang) => {
+  setLang(newLang);
+  localStorage.setItem('lang', newLang);
+  document.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = newLang;
+  document.body.style.fontFamily = newLang === 'ar'
+    ? "'Cairo', sans-serif"
+    : "'inherit'";
+};
 
   return (
     <LanguageContext.Provider value={{ lang, t, switchLang }}>

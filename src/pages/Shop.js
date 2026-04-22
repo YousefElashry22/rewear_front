@@ -18,8 +18,8 @@ function ProductCard({ product, onAdd }) {
       <div className="card-info">
         <h3>{product.name}</h3>
         <span className="price">${product.price}</span>
-        <button className="add-btn" onClick={() => onAdd(product)}>
-          Add to Cart
+<button className="add-btn" onClick={() => onAdd(product)}>
+          {t('addToCart')}
         </button>
       </div>
     </div>

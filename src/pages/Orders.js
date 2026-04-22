@@ -33,15 +33,15 @@ export default function Orders() {
       className="sell-section"
       style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left' }}
     >
-      <h1 style={{ marginBottom: '2rem' }}>Your Orders</h1>
+<h1 style={{ marginBottom: '2rem' }}>{t('myOrdersTitle')}</h1>
       {orders.length === 0 ? (
-        <p>You have no orders yet.</p>
+<p>{t('noOrdersYet')}</p>
       ) : (
         orders.map((order) => (
           <div key={order.id} style={{ border: '1px solid #333', padding: '1.5rem', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #333', paddingBottom: '1rem', marginBottom: '1rem' }}>
-              <span><strong>Order ID:</strong> {order.id.split('-')[0]}</span>
-              <span><strong>Date:</strong> {new Date(order.created_at).toLocaleDateString()}</span>
+              <span><strong>{t('orderId')}:</strong> {order.id.split('-')[0]}</span>
+              <span><strong>{t('orderDate')}:</strong> {new Date(order.created_at).toLocaleDateString()}</span>
             </div>
             
             {order.order_items.map((item) => (

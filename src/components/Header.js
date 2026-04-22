@@ -240,9 +240,39 @@ export default function Header({ search, setSearch, onCartOpen }) {
                     </Link>
                   )}
 
-                  <button className="nav-btn cart-btn full-width" onClick={() => { onCartOpen(); closeMenu(); }}>
+<button className="nav-btn cart-btn full-width" onClick={() => { onCartOpen(); closeMenu(); }}>
                     {t('cart')} ({cartCount})
                   </button>
+
+                  {/* Mobile lang buttons */}
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
+                    <button
+                      onClick={() => { switchLang('en'); closeMenu(); }}
+                      style={{
+                        background: lang === 'en' ? 'rgba(201,168,76,0.15)' : 'none',
+                        border: lang === 'en' ? '1px solid var(--gold)' : '1px solid #444',
+                        color: lang === 'en' ? 'var(--gold)' : '#ccc',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇺🇸 EN
+                    </button>
+                    <button
+                      onClick={() => { switchLang('ar'); closeMenu(); }}
+                      style={{
+                        background: lang === 'ar' ? 'rgba(201,168,76,0.15)' : 'none',
+                        border: lang === 'ar' ? '1px solid var(--gold)' : '1px solid #444',
+                        color: lang === 'ar' ? 'var(--gold)' : '#ccc',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇪🇬 AR
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
